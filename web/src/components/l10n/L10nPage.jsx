@@ -21,7 +21,8 @@
 
 import React from "react";
 import { Gallery, GalleryItem } from "@patternfly/react-core";
-import { Link, CardField, Page } from "~/components/core";
+import { Link, CardField } from "~/components/core";
+import Page from "~/components/core/PageNext";
 import { PATHS } from "~/routes/l10n";
 import { _ } from "~/i18n";
 import { useL10n } from "~/queries/l10n";
@@ -48,17 +49,17 @@ export default function L10nPage() {
         <h2>{_("Localization")}</h2>
       </Page.Header>
 
-      <Page.MainContent>
+      <Page.Content>
         <Gallery hasGutter minWidths={{ default: "300px" }}>
           <GalleryItem>
-            <Section
-              label={_("Language")}
+            <Page.Section
+              title={_("Language")}
               value={locale ? `${locale.name} - ${locale.territory}` : _("Not selected yet")}
             >
               <Link to={PATHS.localeSelection} isPrimary={!locale}>
                 {locale ? _("Change") : _("Select")}
               </Link>
-            </Section>
+            </Page.Section>
           </GalleryItem>
 
           <GalleryItem>
@@ -80,7 +81,7 @@ export default function L10nPage() {
             </Section>
           </GalleryItem>
         </Gallery>
-      </Page.MainContent>
+      </Page.Content>
     </Page>
   );
 }
