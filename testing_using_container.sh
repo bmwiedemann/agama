@@ -44,7 +44,7 @@ podman run --name ${CNAME?} \
 # shortcut for the following
 CEXEC="podman exec ${CNAME?} bash -c"
 
-${CEXEC?} "cd /checkout && ./setup.sh"
+${CEXEC?} "cd /checkout && ./setup.sh || true"
 
 echo "Set the Agama (root) password:"
 podman exec -it ${CNAME?} passwd
