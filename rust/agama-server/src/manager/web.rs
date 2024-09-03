@@ -91,6 +91,7 @@ pub async fn manager_service(dbus: zbus::Connection) -> Result<Router, ServiceEr
     let state = ManagerState { manager, dbus };
     Ok(Router::new()
         .route("/probe", post(probe_action))
+        .route("/probe_sync", post(probe_sync_action))
         .route("/install", post(install_action))
         .route("/finish", post(finish_action))
         .route("/installer", get(installer_status))
@@ -131,6 +132,20 @@ async fn probe_action<'a>(State(state): State<ManagerState<'a>>) -> Result<(), E
             tracing::error!("Could not start probing: {:?}", error);
         }
     });
+    Ok(())
+}
+
+/// Starts the probing process.
+#[utoipa::path(
+    post,
+    path = "/probe_sync",
+    context_path = "/api/manager",
+    responses(
+      (status = 200, description = "Probing done.")
+    )
+)]
+async fn probe_sync_action(State(state): State<ManagerState<'_>>) -> Result<(), Error> {
+    state.manager.probe().await?;
     Ok(())
 }
 
